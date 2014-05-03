@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if created %}
+Invite | Create | Success
+{% else %}
+Invite | Create
+{% endif %}
+{% endblock %}
+
+{% block page_header %}Create a Invite{% endblock page_header %}
+
+{% block content %}
+{% if created %}
+<div class="form-success">
+    <div class="row">
+        <h3>Thanks! A new invite with code <strong>{{invite.code}}</strong> has been created.</h3>
+    </div>
+
+    <div class="row">
+        <h3>It expires on <strong>{{invite.expiration}}</strong>.</h3>
+    </div>
+
+    <div class="row">
+        <a href="{% url 'invite_create' %}" class="btn btn-success">Create another one!</a>
+    </div>
+</div>
+{% else %}
+    {% if form.non_field_errors %}
+    <div class="row">
+        {{ form.non_field_errors }}
+    </div>
+    {% endif %}
+    <div class="col-md-3">
+    <form method="post" action="{% url 'invite_create' %}" role="form">
+
+            {% if form.code.errors %}
+            <div class="row">
+                <div class="span9 formerror">
+                {% for error in form.code.errors %}
+                    <h5>{{ error|escape }}</h5>
+                {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <div class="form-group">
+                    <label for="id_code">Enter a code for this invite: </label>
+                    <input class="form-control" id="id_code" type="text" name="code" maxlength="100"
+                    {% if form.code.value %}
+                    value="{{form.code.value}}"
+                    {% endif %}
+                    >
+                    <br>
+                    <a class="btn btn-info generate_one" href="#">Generate One!</a>
+            </div>
+
+        {% if form.expiration.errors %}
+        <div class="row">
+            <div class="span9 formerror">
+            {% for error in form.expiration.errors %}
+                <h5>{{ error|escape }}</h5>
+            {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+            <div class="form-group">
+                <label for="id_expiration">Enter an expiration date:</label>
+                <input class="form-control" type="text" name="expiration" id="id_expiration"
+                {% if form.expiration.value %}
+                value="{{form.expiration.value}}"
+                {% endif %}
+                >
+            </div>
+
+        {% if form.number_of_days.errors %}
+        <div class="row">
+            <div class="span9 formerror">
+            {% for error in form.number_of_days.errors %}
+                <h5>{{ error|escape }}</h5>
+            {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+            <div class="form-group">
+                <label for="id_number_of_days">Enter number of days:</label>
+                <input class="form-control" type="text" name="number_of_days" id="id_number_of_days"
+                {% if form.number_of_days.value %}
+                value="{{form.number_of_days.value}}"
+                {% endif %}
+                >
+            </div>
+
+        {% if form.number_of_uses.errors %}
+        <div class="row">
+            <div class="span9 formerror">
+            {% for error in form.number_of_uses.errors %}
+                <h5>{{ error|escape }}</h5>
+            {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+            <div class="form-group">
+                <label for="id_number_of_uses">Enter number of uses:</label>
+                <input class="form-control" type="text" name="number_of_uses" id="id_number_of_uses"
+                {% if form.number_of_uses.value %}
+                value="{{form.number_of_uses.value}}"
+                {% endif %}
+                >
+            </div>
+
+        <div class="row">
+            <div class="col-md-1">
+                <a id="form-submit" class="btn btn-primary btn-submit" href="#">Create!</a>
+            </div>
+        </div>
+
+        <input type="hidden" value="{{generated}}" id="generated">
+        {% csrf_token %}
+    </form>
+{% endif %}
+{% endblock %}
+
+{% block extra_javascript %}
+
+$(document).ready(function() {
+    $('.generate_one').click(function() {
+        $('#id_code').val($('#generated').val());
+    });
+    $('#form-submit').click(function(){
+        $('form')[0].submit();
+    });
+});
+
+{% endblock extra_javascript %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Create a Post{% endblock title %}
+
+{% block content %}
+{% if created %}
+<div class="form-success">
+    <div class="row">
+        <h3>Thanks! A new post has been created.</h3>
+    </div>
+
+    <div class="row">
+        <a href="{% url 'around_create_post' %}" class="btn btn-success">Create another one!</a>
+    </div>
+</div>
+
+{% else %}
+
+<div class="col-md-3">
+    <form method="post" action="{% url 'around_create_post' %}" role="form">
+
+        {% if form.content.errors %}
+        <div class="row">
+            <div class="span9 formerror">
+                {% for error in form.url.errors %}
+                <h5>{{ error|escape }}</h5>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        <div class="form-group">
+            <label for="id_content">Content: </label>
+            <textarea class="form-control" id="id_content" type="text" name="content" maxlength="500"
+            {% if form.content.value %}
+            value="{{form.content.value}}"
+            {% endif %}
+            ></textarea>
+        </div>
+
+        <div class="row">
+            <div class="col-md-1">
+                <input id="form-submit" class="btn btn-primary btn-submit" type="submit" ></input>
+            </div>
+        </div>
+        {% csrf_token %}
+    </form>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Comments{% endblock title %}
+{% block page_header %}Comments{% endblock page_header %}
+
+{% block content %}
+{% if no_comments %}
+<h1> NO COMMENTS </h1>
+<a href="/around/add_comment/{{post_id}}">Add One!</a>
+<p>{{post_id}}</p>
+{% else %}
+	{% for comment in comments %}
+    <div class="row">
+    	<p> {{comment.content}} </p>
+    </div>
+    {% endfor %}</br>
+    <a href="/around/add_comment/{{post_id}}">Add Comment</a>
+{% endif %}
+{% endblock content %}

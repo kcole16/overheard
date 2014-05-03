@@ -1,0 +1,86 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="{{ STATIC_URL }}ico/favicon.ico">
+
+    <title>{% block title %}{% endblock title %}</title>
+    {% block meta %}{% endblock meta %}
+
+    {% block styles %}
+
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/d.css" rel="stylesheet">
+
+    {% block extra_styles %}{% endblock extra_styles %}
+    {% endblock styles %}
+
+    {% block javascript %}
+
+    <script src="{{ STATIC_URL }}js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    {% endblock javascript %}
+
+    {% block extra_head %}{% endblock extra_head %}
+  </head>
+
+  <body class="{% block body_class %}{% endblock body_class %}">
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Around</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right navbar-top">
+            <li><a href="{% url 'home' %}"{% if path == '/dashboard/content/'%} class="active"{% endif %}>Home</a></li>
+            {% if user.is_admin %}
+            <li><a href="{% url 'around_create_post' %}"{% if path == '/dashboard/content/'%} class="active"{% endif %}>Create Post</a></li>
+            {% endif %}  
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="{% url 'home' %}"{% if path == '/dashboard/content/'%} class="active"{% endif %}>Home</a></li>
+            {% if user.is_admin %}
+            <li><a href="{% url 'around_create_post' %}"{% if path == '/dashboard/content/'%} class="active"{% endif %}>Create Post</a></li>
+            {% endif %}  
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">{% block page_header %}{% endblock page_header %}</h1>
+                </div>
+            </div>
+          {%  block content %}{%  endblock content %}
+        </div>
+      </div>
+    </div>
+
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    {% block extra_javascript %}{% endblock extra_javascript %}
+    </script>
+    </body>
+    {% block tracking_js %}
+    
+    {% endblock tracking_js %}
+</html>

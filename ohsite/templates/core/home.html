@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock title %}
+{% block page_header %}Home{% endblock page_header %}
+
+{% block content %}
+{% if no_posts %}
+<h1> NO POSTS </h1>
+{% else %}
+	{% for post in posts %}
+    <div class="row">
+    	<a href="/around/comments/{{ post.id }}"> {{ post.content }} </p>
+    </div>
+    {% endfor %}
+{% endif %}
+{% endblock content %}
+
