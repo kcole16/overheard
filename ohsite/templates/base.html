@@ -45,9 +45,6 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right navbar-top">
             <li><a href="{% url 'home' %}"{% if path == '/dashboard/content/'%} class="active"{% endif %}>Home</a></li>
-            {% if user.is_admin %}
-            <li><a href="{% url 'around_create_post' %}"{% if path == '/dashboard/content/'%} class="active"{% endif %}>Create Post</a></li>
-            {% endif %}  
             <li><a href="{% url 'logout' %}">Logout</a></li>
           </ul>
         </div>
@@ -59,9 +56,8 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li><a href="{% url 'home' %}"{% if path == '/dashboard/content/'%} class="active"{% endif %}>Home</a></li>
-            {% if user.is_admin %}
             <li><a href="{% url 'around_create_post' %}"{% if path == '/dashboard/content/'%} class="active"{% endif %}>Create Post</a></li>
-            {% endif %}  
+            <li><a href="{% url 'hype_get_topics' %}"{% if path == '/dashboard/content/'%} class="active"{% endif %}>Refresh Topics</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

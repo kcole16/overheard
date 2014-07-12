@@ -45,6 +45,7 @@ INSTALLED_APPS = (
 
     'core',
     'around',
+    'hype'
 )
 
 MIDDLEWARE_CLASSES = (

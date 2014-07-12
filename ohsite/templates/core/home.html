@@ -9,9 +9,15 @@
 {% else %}
 	{% for post in posts %}
     <div class="row">
-    	<a href="/around/comments/{{ post.id }}"> {{ post.content }} </p>
+    	<a href="/around/comments/{{ post.id }}"> {{ post.content }}</a>
+    	{% for count in counts %}
+    		{% if post.id == count.post_id %}
+    			<a> ({{ count.count }}) </a>
+    		{% endif %}
+    	{% endfor %}
     </div>
     {% endfor %}
 {% endif %}
 {% endblock content %}
+
 

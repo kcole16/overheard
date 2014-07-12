@@ -32,4 +32,5 @@ class CommentForm(forms.ModelForm):
         super(CommentForm, self).__init__(*args, **kwargs)
 
     class Meta:
-        model = Post
+        model = Comment
+

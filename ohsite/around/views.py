@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.http import Http404, HttpResponse, HttpResponseBadRequest
+from django.http import Http404, HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response, render, redirect
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
@@ -11,11 +11,35 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from core.models import Account
 from around.models import Post, Comment
-from around.forms import PostForm, CommentForm
+from around.forms import PostForm, CommentForm, AccountForm
 
 from datetime import datetime
 
-#def create_user(request):
+def create_account(request):
+	if request.POST:
+		form = AccountForm(request.POST)
+		if form.is_valid():
+			form.save()
+			user_id = form.instance.id
+			password = Account.objects.get(id=user_id)
+			pw = password.password
+			check=password.email.split("@")
+			password.set_password(pw)
+			password.save()		
+			if check[1]!="virginia.edu":
+				Account.objects.filter(id=user_id).delete()	
+				return render_to_response('around/email_fail.html',context_instance=RequestContext(request))
+			else:
+				return HttpResponseRedirect('/around/home') 
+		else:
+			print form.errors
+	else:
+		form = AccountForm()
+	
+	return render_to_response('around/create_account.html', context_instance=RequestContext(request))
+
+
+
 
 def comments(request, post_id):
 	no_comments = False
@@ -66,8 +90,6 @@ def add_comment(request, post_id):
 	else:
 		return render_to_response('around/add_comment.html', {'created':created, 'post_id':post_id}, context_instance=RequestContext(request))
 
-#@login_required
-#def add_comment(request, post_id):
 
 
 

@@ -11,17 +11,19 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from around.models import Post, Comment
 
-@login_required
 def home(request):
 	posts = []
 	no_posts = False
 	try:
 		posts=Post.objects.all()
+		print posts
 	except ObjectDoesNotExist:
 		no_posts=True
 		return render_to_response('core/home.html',{'posts':posts, 'no_posts':no_posts}, context_instance=RequestContext(request))
 	else:
-		return render_to_response('core/home.html',{'posts':posts}, context_instance=RequestContext(request))
+		counts = Comment.objects.raw('select p.id, count(*) from around_post p inner join around_comment c on c.post_id = p.id group by p.id;  ')
+		return render_to_response('core/home.html',{'posts':posts, 'counts':counts}, context_instance=RequestContext(request))
+
 
 @login_required
 def logout_view(request):
