@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock title %}
+{% block page_header %}Hype in DC{% endblock page_header %}
+
+{% block content %}
+	{% for topic in topics %}
+    <div class="row">
+    	<a href="/hype/comments/{{ topic.id }}"> {{ topic.title }}</a>
+    	{% for count in counts %}
+    		{% if topic.id == count.id %}
+    			<a> ({{ count.count }}) </a>
+    		{% endif %}
+    	{% endfor %}
+    </div>
+    {% endfor %}
+
+{% endblock content %}
